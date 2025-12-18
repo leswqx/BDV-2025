@@ -1,0 +1,100 @@
+﻿Сборка начата 18.12.2025 01:01:01.
+Уровень детализации журнала: Normal.     1>Проект "D:\COURSE_2\3_SEM\KPO\BDV-2025\BDV-2025\BDV-2025.vcxproj" в узле 2 (целевые объекты Rebuild).
+     1>_PrepareForClean:
+         Файл "Debug\BDV-2025.tlog\BDV-2025.lastbuildstate" удаляется.
+       PrepareForBuild:
+         Структурированный вывод включен. Форматирование диагностики компилятора будет отражать иерархию ошибок. Подробнее см. https://aka.ms/cpp/structured-output.
+       InitializeBuildStatus:
+         Создание "Debug\BDV-2025.tlog\unsuccessfulbuild", так как было задано "AlwaysCreate".
+         Обращение к "Debug\BDV-2025.tlog\unsuccessfulbuild".
+       ClCompile:
+         C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\HostX86\x86\CL.exe /c /ZI /JMC /nologo /W3 /WX- /diagnostics:column /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /permissive- /Fo"Debug\\" /Fd"Debug\vc143.pdb" /external:W3 /Gd /TP /analyze- /FC /errorReport:prompt "BDV-2025.cpp" Error.cpp FST.cpp Generator.cpp GRB.cpp In.cpp IT.cpp LexAnalysis.cpp Log.cpp LT.cpp MFST.cpp Parm.cpp PolishNotation.cpp SemAnalysis.cpp
+         BDV-2025.cpp
+         Error.cpp
+     1>D:\COURSE_2\3_SEM\KPO\BDV-2025\BDV-2025\Error.cpp(32,9): warning C4002: слишком много аргументов для вызова макроса, подобного функции, "ERROR_ENTRY_NODEF"
+     1>D:\COURSE_2\3_SEM\KPO\BDV-2025\BDV-2025\Error.cpp(45,9): warning C4003: недостаточно аргументов для вызова макроса, подобного функции, "ERROR_ENTRY"
+     1>D:\COURSE_2\3_SEM\KPO\BDV-2025\BDV-2025\Error.cpp(47,9): warning C4003: недостаточно аргументов для вызова макроса, подобного функции, "ERROR_ENTRY"
+     1>D:\COURSE_2\3_SEM\KPO\BDV-2025\BDV-2025\Error.cpp(69,9): warning C4003: недостаточно аргументов для вызова макроса, подобного функции, "ERROR_ENTRY"
+     1>D:\COURSE_2\3_SEM\KPO\BDV-2025\BDV-2025\Error.cpp(70,9): warning C4003: недостаточно аргументов для вызова макроса, подобного функции, "ERROR_ENTRY"
+         FST.cpp
+         Generator.cpp
+     1>C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xutility(4813,18): warning C4244: =: преобразование "wchar_t" в "char", возможна потеря данных
+         (компиляция исходного файла "Generator.cpp")
+             C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xutility(4813,18):
+             контекст создания экземпляра шаблона (сначала самый старый)
+                 D:\COURSE_2\3_SEM\KPO\BDV-2025\BDV-2025\Generator.cpp(679,23):
+                 выполняется компиляция ссылки на экземпляр шаблон функции "std::basic_string<char,std::char_traits<char>,std::allocator<char>>::basic_string<std::_String_iterator<std::_String_val<std::_Simple_types<_Elem>>>,0>(_Iter,_Iter,const _Alloc &)"
+                 with
+                 [
+                     _Elem=wchar_t,
+                     _Iter=std::_String_iterator<std::_String_val<std::_Simple_types<wchar_t>>>,
+                     _Alloc=std::allocator<char>
+                 ]
+                     D:\COURSE_2\3_SEM\KPO\BDV-2025\BDV-2025\Generator.cpp(679,23):
+                     см. первую ссылку на "std::basic_string<char,std::char_traits<char>,std::allocator<char>>::basic_string" в "Gener::CodeGeneration"
+                 C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xstring(812,17):
+                 выполняется компиляция ссылки на экземпляр шаблон функции "void std::basic_string<char,std::char_traits<char>,std::allocator<char>>::_Construct_from_iter<wchar_t*,wchar_t*,_Size_type>(_Iter,const _Sent,_Size)"
+                 with
+                 [
+                     _Size_type=std::+::_Size_type,
+                     _Iter=wchar_t *,
+                     _Sent=wchar_t *,
+                     _Size=std::+::_Size_type
+                 ]
+                 C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xstring(968,18):
+                 выполняется компиляция ссылки на экземпляр шаблон функции "_OutIt *std::_Copy_n_unchecked4<wchar_t*,_Size,char*>(_InIt,_SizeTy,_OutIt)"
+                 with
+                 [
+                     _OutIt=char *,
+                     _Size=std::+::_Size_type,
+                     _InIt=wchar_t *,
+                     _SizeTy=std::+::_Size_type
+                 ]
+         
+         GRB.cpp
+         In.cpp
+         IT.cpp
+         LexAnalysis.cpp
+         Log.cpp
+         LT.cpp
+         MFST.cpp
+         Parm.cpp
+         PolishNotation.cpp
+         SemAnalysis.cpp
+         Создание кода...
+       Link:
+         C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\HostX86\x86\link.exe /ERRORREPORT:PROMPT /OUT:"D:\COURSE_2\3_SEM\KPO\BDV-2025\Debug\BDV-2025.exe" /INCREMENTAL /ILK:"Debug\BDV-2025.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:\COURSE_2\3_SEM\KPO\BDV-2025\Debug\BDV-2025.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\COURSE_2\3_SEM\KPO\BDV-2025\Debug\BDV-2025.lib" /MACHINE:X86 "Debug\BDV-2025.obj"
+         Debug\Error.obj
+         Debug\FST.obj
+         Debug\Generator.obj
+         Debug\GRB.obj
+         Debug\In.obj
+         Debug\IT.obj
+         Debug\LexAnalysis.obj
+         Debug\Log.obj
+         Debug\LT.obj
+         Debug\MFST.obj
+         Debug\Parm.obj
+         Debug\PolishNotation.obj
+         Debug\SemAnalysis.obj
+         BDV-2025.vcxproj -> D:\COURSE_2\3_SEM\KPO\BDV-2025\Debug\BDV-2025.exe
+       FinalizeBuildStatus:
+         Файл "Debug\BDV-2025.tlog\unsuccessfulbuild" удаляется.
+         Обращение к "Debug\BDV-2025.tlog\BDV-2025.lastbuildstate".
+     1>Сборка проекта "D:\COURSE_2\3_SEM\KPO\BDV-2025\BDV-2025\BDV-2025.vcxproj" завершена (целевые объекты Rebuild).
+
+Сборка успешно завершена.
+
+       "D:\COURSE_2\3_SEM\KPO\BDV-2025\BDV-2025\BDV-2025.vcxproj" (целевой объект Rebuild ) (1) ->
+       (Целевой объект ClCompile) -> 
+         D:\COURSE_2\3_SEM\KPO\BDV-2025\BDV-2025\Error.cpp(32,9): warning C4002: слишком много аргументов для вызова макроса, подобного функции, "ERROR_ENTRY_NODEF"
+         D:\COURSE_2\3_SEM\KPO\BDV-2025\BDV-2025\Error.cpp(45,9): warning C4003: недостаточно аргументов для вызова макроса, подобного функции, "ERROR_ENTRY"
+         D:\COURSE_2\3_SEM\KPO\BDV-2025\BDV-2025\Error.cpp(47,9): warning C4003: недостаточно аргументов для вызова макроса, подобного функции, "ERROR_ENTRY"
+         D:\COURSE_2\3_SEM\KPO\BDV-2025\BDV-2025\Error.cpp(69,9): warning C4003: недостаточно аргументов для вызова макроса, подобного функции, "ERROR_ENTRY"
+         D:\COURSE_2\3_SEM\KPO\BDV-2025\BDV-2025\Error.cpp(70,9): warning C4003: недостаточно аргументов для вызова макроса, подобного функции, "ERROR_ENTRY"
+         C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xutility(4813,18): warning C4244: =: преобразование "wchar_t" в "char", возможна потеря данных
+
+    Предупреждений: 6
+    Ошибок: 0
+
+Прошло времени 00:00:15.90

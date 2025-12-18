@@ -1,0 +1,25 @@
+﻿Сборка начата 18.12.2025 01:01:46.
+Уровень детализации журнала: Normal.     1>Проект "D:\COURSE_2\3_SEM\KPO\BDV-2025\StaticLibrary\StaticLibrary.vcxproj" в узле 2 (целевые объекты Rebuild).
+     1>_PrepareForClean:
+         Файл "Debug\StaticLibrary.tlog\StaticLibrary.lastbuildstate" удаляется.
+       PrepareForBuild:
+         Структурированный вывод включен. Форматирование диагностики компилятора будет отражать иерархию ошибок. Подробнее см. https://aka.ms/cpp/structured-output.
+       InitializeBuildStatus:
+         Создание "Debug\StaticLibrary.tlog\unsuccessfulbuild", так как было задано "AlwaysCreate".
+         Обращение к "Debug\StaticLibrary.tlog\unsuccessfulbuild".
+       ClCompile:
+         C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\HostX86\x86\CL.exe /c /ZI /JMC /nologo /W3 /WX- /diagnostics:column /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _LIB /D _UNICODE /D UNICODE /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /permissive- /Fo"Debug\\" /Fd"D:\COURSE_2\3_SEM\KPO\BDV-2025\Debug\StaticLibrary.pdb" /external:W3 /Gd /TP /analyze- /FC /errorReport:prompt StaticLibrary.cpp
+         StaticLibrary.cpp
+       Lib:
+         C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\HostX86\x86\Lib.exe /OUT:"D:\COURSE_2\3_SEM\KPO\BDV-2025\Debug\StaticLibrary.lib" /NOLOGO /MACHINE:X86 Debug\StaticLibrary.obj
+         StaticLibrary.vcxproj -> D:\COURSE_2\3_SEM\KPO\BDV-2025\Debug\StaticLibrary.lib
+       FinalizeBuildStatus:
+         Файл "Debug\StaticLibrary.tlog\unsuccessfulbuild" удаляется.
+         Обращение к "Debug\StaticLibrary.tlog\StaticLibrary.lastbuildstate".
+     1>Сборка проекта "D:\COURSE_2\3_SEM\KPO\BDV-2025\StaticLibrary\StaticLibrary.vcxproj" завершена (целевые объекты Rebuild).
+
+Сборка успешно завершена.
+    Предупреждений: 0
+    Ошибок: 0
+
+Прошло времени 00:00:00.64

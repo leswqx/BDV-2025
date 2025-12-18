@@ -1,0 +1,145 @@
+uint function funcA(uint x) {
+    adv uint local = x * 2;
+    return local&;
+}
+
+uint function funcB(uint y) {
+    adv uint local = y + 10;
+    return local ^ 2;
+}
+
+string function getNum(uint n) {
+    switch(n) {
+        case 1: return "one";
+        case 2: return "two";
+        default: return "other";
+    }
+}
+
+main {
+    cout "Types and literals";
+    
+    adv uint decimal = 42;
+    adv uint hex = 0xFF;
+    adv uint zero = 0;
+    adv string text = "Hello";
+    
+    cout "decimal=42:"; cout decimal;
+    cout "hex=0xFF:"; cout hex;
+    cout "text:"; cout text;
+    
+    cout "";
+    cout "Square & and power ^";
+    
+    adv uint a = 3;
+    adv uint square = a&;
+    adv uint power = a ^ 2;
+    adv uint directSquare = 5&;
+    adv uint directPower = 2 ^ 3;
+    
+    cout "a=3";
+    cout "a& ="; cout square;
+    cout "a^2 ="; cout power;
+    cout "5& ="; cout directSquare;
+    cout "2^3 ="; cout directPower;
+    
+    cout "";
+    cout "All aritmetic operations";
+    
+    adv uint x = 20;
+    adv uint y = 3;
+    
+    adv uint sum = x + y;
+    adv uint diff = x - y;
+    adv uint mul = x * y;
+    adv uint div = x / y;
+    adv uint mod = x % y;
+    
+    cout "x=20, y=3";
+    cout "x+y ="; cout sum;
+    cout "x-y ="; cout diff;
+    cout "x*y ="; cout mul;
+    cout "x/y ="; cout div;
+    cout "x%y ="; cout mod;
+    
+    cout "";
+    cout "Operator precedence";
+    
+    adv uint prio1 = 2 + 3&;
+    adv uint prio2 = (2 + 3)&;
+    adv uint prio3 = 2 * 3&;
+    adv uint prio4 = 2 ^ 3 * 2;
+    adv uint prio5 = 10 / 2&;
+    
+    cout "2+3& ="; cout prio1;
+    cout "(2+3)& ="; cout prio2;
+    cout "2*3& ="; cout prio3;
+    cout "2^3*2 ="; cout prio4;
+    cout "10/2& ="; cout prio5;
+    
+    cout "";
+    cout "All comparison operators";
+    
+    adv uint cmp1 = (5 > 3);
+    adv uint cmp2 = (2 == 2);
+    adv uint cmp3 = (4 != 5);
+    adv uint cmp4 = (3 < 5);
+    adv uint cmp5 = (5 >= 5);
+    adv uint cmp6 = (2 <= 3);
+    
+    cout "5>3 ="; cout cmp1;
+    cout "2==2 ="; cout cmp2;
+    cout "4!=5 ="; cout cmp3;
+    cout "3<5 ="; cout cmp4;
+    cout "5>=5 ="; cout cmp5;
+    cout "2<=3 ="; cout cmp6;
+    
+    cout "";
+    cout "User functions and scope";
+    
+    adv uint resA = funcA(4);
+    adv uint resB = funcB(4);
+    
+    cout "funcA(4) ="; cout resA;
+    cout "funcB(4) ="; cout resB;
+    
+    cout "";
+    cout "While loop";
+    
+    adv uint i = 1;
+    while (i <= 2) {
+        adv uint temp = i&;
+        cout "i="; cout i;
+        cout "i&="; cout temp;
+        i = i + 1;
+    }
+    
+    cout "";
+    cout "Switch statement";
+    
+    adv uint val = 2;
+    switch(val) {
+        case 1: cout "ONE";
+        case 2: cout "TWO";
+        default: cout "DONE";
+    }
+    
+    adv string word = getNum(2);
+    adv string wordDefault = getNum(5);
+    
+    cout "getNum(2) ="; cout word;
+    cout "getNum(5) ="; cout wordDefault;
+    
+    cout "";
+    cout "All Static functions";
+    
+    adv string concat = stringConcat("Hello", "World");
+    adv uint length = stringLength("Hello");
+    adv uint fromStr = stringToUnsigned("123");
+    adv string toStr = unsignedToString(456);
+    
+    cout "stringConcat(Hello, World) ="; cout concat;
+    cout "stringLength(Hello) ="; cout length;
+    cout "stringToUnsigned(123) ="; cout fromStr;
+    cout "unsignedToString(456) ="; cout toStr;
+}

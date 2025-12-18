@@ -1,0 +1,1355 @@
+Microsoft (R) Macro Assembler Version 14.44.35217.0	    12/18/25 01:08:16
+out.asm							     Page 1 - 1
+
+
+				.586
+				.model flat, stdcall
+				includelib libucrt.lib
+				includelib kernel32.lib
+				includelib "..\Debug\StaticLibrary.lib"
+				ExitProcess PROTO :DWORD 
+				.stack 4096
+
+				 stringToUnsigned PROTO : DWORD, : DWORD
+
+				 unsignedToString PROTO : DWORD, : DWORD
+
+				 stringLength PROTO : DWORD, : DWORD
+
+				 stringConcat PROTO : DWORD, : DWORD, : DWORD
+
+				 outUint PROTO : DWORD
+
+				 outString PROTO : DWORD
+ 00000000			.const
+ 00000000 0D 0A 00				newline byte 13, 10, 0
+ 00000000			.data
+ 00000000 00000000				temp sdword ?
+ 00000004  00000100 [				buffer byte 256 dup(0)
+	    00
+	   ]
+ 00000104  00000100 [				temp_str_buf byte 256 dup(0)
+	    00
+	   ]
+ 00000204 00000000				v_x dword ?
+ 00000208 00000000				v_local dword ?
+ 0000020C 00000002				L_2 dword 2
+ 00000210 00000000				v_y dword ?
+ 00000214 0000000A				L_10 dword 10
+ 00000218 00000000				v_n dword ?
+ 0000021C 00000001				L_1 dword 1
+ 00000220 6F 6E 65 00				L_LIT_1 byte "one", 0
+ 00000224 74 77 6F 00				L_LIT_2 byte "two", 0
+ 00000228 6F 74 68 65 72			L_LIT_3 byte "other", 0
+	   00
+ 0000022E 54 79 70 65 73			L_LIT_4 byte "Types and literals", 0
+	   20 61 6E 64 20
+	   6C 69 74 65 72
+	   61 6C 73 00
+ 00000241 00000000				v_decimal dword ?
+ 00000245 0000002A				L_42 dword 42
+ 00000249 00000000				v_hex dword ?
+ 0000024D 000000FF				L_255 dword 255
+ 00000251 00000000				v_zero dword ?
+ 00000255 00000000				L_0 dword 0
+ 00000259 00000000				v_text dword ?
+ 0000025D  00000100 [				v_text_buf byte 256 dup(0)
+	    00
+	   ]
+ 0000035D 48 65 6C 6C 6F			L_LIT_5 byte "Hello", 0
+	   00
+ 00000363 64 65 63 69 6D			L_LIT_6 byte "decimal=42:", 0
+	   61 6C 3D 34 32
+	   3A 00
+ 0000036F 68 65 78 3D 30			L_LIT_7 byte "hex=0xFF:", 0
+	   78 46 46 3A 00
+ 00000379 74 65 78 74 3A			L_LIT_8 byte "text:", 0
+	   00
+ 0000037F 00					L_LIT_9 byte 0
+ 00000380 53 71 75 61 72			L_LIT_10 byte "Square & and power ^", 0
+	   65 20 26 20 61
+	   6E 64 20 70 6F
+	   77 65 72 20 5E
+	   00
+ 00000395 00000000				v_a dword ?
+ 00000399 00000003				L_3 dword 3
+ 0000039D 00000000				v_square dword ?
+ 000003A1 00000000				v_power dword ?
+ 000003A5 00000000				v_directSquare dword ?
+ 000003A9 00000005				L_5 dword 5
+ 000003AD 00000000				v_directPower dword ?
+ 000003B1 61 3D 33 00				L_LIT_11 byte "a=3", 0
+ 000003B5 61 26 20 3D 00			L_LIT_12 byte "a& =", 0
+ 000003BA 61 5E 32 20 3D			L_LIT_13 byte "a^2 =", 0
+	   00
+ 000003C0 35 26 20 3D 00			L_LIT_14 byte "5& =", 0
+ 000003C5 32 5E 33 20 3D			L_LIT_15 byte "2^3 =", 0
+	   00
+ 000003CB 00					L_LIT_16 byte 0
+ 000003CC 41 6C 6C 20 61			L_LIT_17 byte "All aritmetic operations", 0
+	   72 69 74 6D 65
+	   74 69 63 20 6F
+	   70 65 72 61 74
+	   69 6F 6E 73 00
+ 000003E5 00000014				L_20 dword 20
+ 000003E9 00000000				v_sum dword ?
+ 000003ED 00000000				v_diff dword ?
+ 000003F1 00000000				v_mul dword ?
+ 000003F5 00000000				v_div dword ?
+ 000003F9 00000000				v_mod dword ?
+ 000003FD 78 3D 32 30 2C			L_LIT_18 byte "x=20, y=3", 0
+	   20 79 3D 33 00
+ 00000407 78 2B 79 20 3D			L_LIT_19 byte "x+y =", 0
+	   00
+ 0000040D 78 2D 79 20 3D			L_LIT_20 byte "x-y =", 0
+	   00
+ 00000413 78 2A 79 20 3D			L_LIT_21 byte "x*y =", 0
+	   00
+ 00000419 78 2F 79 20 3D			L_LIT_22 byte "x/y =", 0
+	   00
+ 0000041F 78 25 79 20 3D			L_LIT_23 byte "x%y =", 0
+	   00
+ 00000425 00					L_LIT_24 byte 0
+ 00000426 4F 70 65 72 61			L_LIT_25 byte "Operator precedence", 0
+	   74 6F 72 20 70
+	   72 65 63 65 64
+	   65 6E 63 65 00
+ 0000043A 00000000				v_prio1 dword ?
+ 0000043E 00000000				v_prio2 dword ?
+ 00000442 00000000				v_prio3 dword ?
+ 00000446 00000000				v_prio4 dword ?
+ 0000044A 00000000				v_prio5 dword ?
+ 0000044E 32 2B 33 26 20			L_LIT_26 byte "2+3& =", 0
+	   3D 00
+ 00000455 28 32 2B 33 29			L_LIT_27 byte "(2+3)& =", 0
+	   26 20 3D 00
+ 0000045E 32 2A 33 26 20			L_LIT_28 byte "2*3& =", 0
+	   3D 00
+ 00000465 32 5E 33 2A 32			L_LIT_29 byte "2^3*2 =", 0
+	   20 3D 00
+ 0000046D 31 30 2F 32 26			L_LIT_30 byte "10/2& =", 0
+	   20 3D 00
+ 00000475 00					L_LIT_31 byte 0
+ 00000476 41 6C 6C 20 63			L_LIT_32 byte "All comparison operators", 0
+	   6F 6D 70 61 72
+	   69 73 6F 6E 20
+	   6F 70 65 72 61
+	   74 6F 72 73 00
+ 0000048F 00000000				v_cmp1 dword ?
+ 00000493 00000000				v_cmp2 dword ?
+ 00000497 00000000				v_cmp3 dword ?
+ 0000049B 00000004				L_4 dword 4
+ 0000049F 00000000				v_cmp4 dword ?
+ 000004A3 00000000				v_cmp5 dword ?
+ 000004A7 00000000				v_cmp6 dword ?
+ 000004AB 35 3E 33 20 3D			L_LIT_33 byte "5>3 =", 0
+	   00
+ 000004B1 32 3D 3D 32 20			L_LIT_34 byte "2==2 =", 0
+	   3D 00
+ 000004B8 34 21 3D 35 20			L_LIT_35 byte "4!=5 =", 0
+	   3D 00
+ 000004BF 33 3C 35 20 3D			L_LIT_36 byte "3<5 =", 0
+	   00
+ 000004C5 35 3E 3D 35 20			L_LIT_37 byte "5>=5 =", 0
+	   3D 00
+ 000004CC 32 3C 3D 33 20			L_LIT_38 byte "2<=3 =", 0
+	   3D 00
+ 000004D3 00					L_LIT_39 byte 0
+ 000004D4 55 73 65 72 20			L_LIT_40 byte "User functions and scope", 0
+	   66 75 6E 63 74
+	   69 6F 6E 73 20
+	   61 6E 64 20 73
+	   63 6F 70 65 00
+ 000004ED 00000000				v_resA dword ?
+ 000004F1 00000000				v_resB dword ?
+ 000004F5 66 75 6E 63 41			L_LIT_41 byte "funcA(4) =", 0
+	   28 34 29 20 3D
+	   00
+ 00000500 66 75 6E 63 42			L_LIT_42 byte "funcB(4) =", 0
+	   28 34 29 20 3D
+	   00
+ 0000050B 00					L_LIT_43 byte 0
+ 0000050C 57 68 69 6C 65			L_LIT_44 byte "While loop", 0
+	   20 6C 6F 6F 70
+	   00
+ 00000517 00000000				v_i dword ?
+ 0000051B 00000000				v_temp dword ?
+ 0000051F 69 3D 00				L_LIT_45 byte "i=", 0
+ 00000522 69 26 3D 00				L_LIT_46 byte "i&=", 0
+ 00000526 00					L_LIT_47 byte 0
+ 00000527 53 77 69 74 63			L_LIT_48 byte "Switch statement", 0
+	   68 20 73 74 61
+	   74 65 6D 65 6E
+	   74 00
+ 00000538 00000000				v_val dword ?
+ 0000053C 4F 4E 45 00				L_LIT_49 byte "ONE", 0
+ 00000540 54 57 4F 00				L_LIT_50 byte "TWO", 0
+ 00000544 44 4F 4E 45 00			L_LIT_51 byte "DONE", 0
+ 00000549 00000000				v_word dword ?
+ 0000054D					v_word_buf byte 256 dup(0)
+ 0000064D 00000000				v_wordDefault dword ?
+ 00000651					v_wordDefault_buf byte 256 dup(0)
+ 00000751 67 65 74 4E 75			L_LIT_52 byte "getNum(2) =", 0
+	   6D 28 32 29 20
+	   3D 00
+ 0000075D 67 65 74 4E 75			L_LIT_53 byte "getNum(5) =", 0
+	   6D 28 35 29 20
+	   3D 00
+ 00000769 00					L_LIT_54 byte 0
+ 0000076A 41 6C 6C 20 53			L_LIT_55 byte "All Static functions", 0
+	   74 61 74 69 63
+	   20 66 75 6E 63
+	   74 69 6F 6E 73
+	   00
+ 0000077F 00000000				v_concat dword ?
+ 00000783  00000100 [				v_concat_buf byte 256 dup(0)
+	    00
+	   ]
+ 00000883 48 65 6C 6C 6F			L_LIT_56 byte "Hello", 0
+	   00
+ 00000889 57 6F 72 6C 64			L_LIT_57 byte "World", 0
+	   00
+ 0000088F 00000000				v_length dword ?
+ 00000893 48 65 6C 6C 6F			L_LIT_58 byte "Hello", 0
+	   00
+ 00000899 00000000				v_fromStr dword ?
+ 0000089D 31 32 33 00				L_LIT_59 byte "123", 0
+ 000008A1 00000000				v_toStr dword ?
+ 000008A5  00000100 [				v_toStr_buf byte 256 dup(0)
+	    00
+	   ]
+ 000009A5 000001C8				L_456 dword 456
+ 000009A9 73 74 72 69 6E			L_LIT_60 byte "stringConcat(Hello, World) =", 0
+	   67 43 6F 6E 63
+	   61 74 28 48 65
+	   6C 6C 6F 2C 20
+	   57 6F 72 6C 64
+	   29 20 3D 00
+ 000009C6 73 74 72 69 6E			L_LIT_61 byte "stringLength(Hello) =", 0
+	   67 4C 65 6E 67
+	   74 68 28 48 65
+	   6C 6C 6F 29 20
+	   3D 00
+ 000009DC 73 74 72 69 6E			L_LIT_62 byte "stringToUnsigned(123) =", 0
+	   67 54 6F 55 6E
+	   73 69 67 6E 65
+	   64 28 31 32 33
+	   29 20 3D 00
+ 000009F4 75 6E 73 69 67			L_LIT_63 byte "unsignedToString(456) =", 0
+	   6E 65 64 54 6F
+	   53 74 72 69 6E
+	   67 28 34 35 36
+	   29 20 3D 00
+ 00000000			.code
+				;----------- fn_funcA ------------
+ 00000000			fn_funcA PROC p_x : dword
+				; --- save registers ---
+ 00000003  53			push ebx
+ 00000004  52			push edx
+				; ----------------------
+ 00000005  FF 75 08		push p_x
+ 00000008  FF 35 0000020C R	push L_2
+ 0000000E  5B			pop ebx
+ 0000000F  58			pop eax
+ 00000010  0F AF C3		imul eax, ebx
+ 00000013  50			push eax
+ 00000014  58			pop eax
+ 00000015  A3 00000208 R	mov v_local, eax
+ 0000001A  FF 35 00000208 R	push v_local
+ 00000020  58			pop eax
+ 00000021  0F AF C0		imul eax, eax
+ 00000024  50			push eax
+ 00000025  58			pop eax
+				; --- restore registers ---
+ 00000026  5A			pop edx
+ 00000027  5B			pop ebx
+				; -------------------------
+ 00000029  C2 0004		ret 4
+ 0000002C			fn_funcA ENDP
+				;------------------------------
+
+				;----------- fn_funcB ------------
+ 0000002C			fn_funcB PROC p_y : dword
+				; --- save registers ---
+ 0000002F  53			push ebx
+ 00000030  52			push edx
+				; ----------------------
+ 00000031  FF 75 08		push p_y
+ 00000034  FF 35 00000214 R	push L_10
+ 0000003A  5B			pop ebx
+ 0000003B  58			pop eax
+ 0000003C  03 C3		add eax, ebx
+ 0000003E  50			push eax
+ 0000003F  58			pop eax
+ 00000040  A3 00000208 R	mov v_local, eax
+ 00000045  FF 35 00000208 R	push v_local
+ 0000004B  FF 35 0000020C R	push L_2
+ 00000051  59			pop ecx
+ 00000052  58			pop eax
+ 00000053  8B D8		mov ebx, eax
+ 00000055  83 F9 00		cmp ecx, 0
+ 00000058  75 07		jne pow_1_start
+ 0000005A  B8 00000001		mov eax, 1
+ 0000005F  EB 0C		jmp pow_1_end
+ 00000061			pow_1_start:
+ 00000061  49			dec ecx
+ 00000062			pow_1_loop:
+ 00000062  83 F9 00		cmp ecx, 0
+ 00000065  74 06		je pow_1_end
+ 00000067  0F AF C3		imul eax, ebx
+ 0000006A  49			dec ecx
+ 0000006B  EB F5		jmp pow_1_loop
+ 0000006D			pow_1_end:
+ 0000006D  50			push eax
+ 0000006E  58			pop eax
+				; --- restore registers ---
+ 0000006F  5A			pop edx
+ 00000070  5B			pop ebx
+				; -------------------------
+ 00000072  C2 0004		ret 4
+ 00000075			fn_funcB ENDP
+				;------------------------------
+
+				;----------- fn_getNum ------------
+ 00000075			fn_getNum PROC p_n : dword
+				; --- save registers ---
+ 00000078  53			push ebx
+ 00000079  52			push edx
+				; ----------------------
+				; --- switch ---
+ 0000007A  8B 45 08		mov eax, p_n
+ 0000007D  83 F8 01		cmp eax, 1
+ 00000080  74 07		je case_1_0
+ 00000082  83 F8 02		cmp eax, 2
+ 00000085  74 10		je case_1_1
+ 00000087  EB 1C		jmp default_1
+ 00000089			case_1_0:
+ 00000089  68 00000220 R	push offset L_LIT_1
+ 0000008E  58			pop eax
+				; --- restore registers ---
+ 0000008F  5A			pop edx
+ 00000090  5B			pop ebx
+				; -------------------------
+ 00000092  C2 0004		ret 4
+ 00000095  EB 1A		jmp switch_1_end
+ 00000097			case_1_1:
+ 00000097  68 00000224 R	push offset L_LIT_2
+ 0000009C  58			pop eax
+				; --- restore registers ---
+ 0000009D  5A			pop edx
+ 0000009E  5B			pop ebx
+				; -------------------------
+ 000000A0  C2 0004		ret 4
+ 000000A3  EB 0C		jmp switch_1_end
+ 000000A5			default_1:
+ 000000A5  68 00000228 R	push offset L_LIT_3
+ 000000AA  58			pop eax
+				; --- restore registers ---
+ 000000AB  5A			pop edx
+ 000000AC  5B			pop ebx
+				; -------------------------
+ 000000AE  C2 0004		ret 4
+ 000000B1			switch_1_end:
+ 000000B1			fn_getNum ENDP
+				;------------------------------
+
+				;----------- MAIN ------------
+ 000000B1			main PROC
+ 000000B1  68 0000022E R	push offset L_LIT_4
+ 000000B6  E8 00000000 E	call outString
+ 000000BB  68 00000000 R	push offset newline
+ 000000C0  E8 00000000 E	call outString
+ 000000C5  FF 35 00000245 R	push L_42
+ 000000CB  58			pop eax
+ 000000CC  A3 00000241 R	mov v_decimal, eax
+ 000000D1  FF 35 0000024D R	push L_255
+ 000000D7  58			pop eax
+ 000000D8  A3 00000249 R	mov v_hex, eax
+ 000000DD  FF 35 00000255 R	push L_0
+ 000000E3  58			pop eax
+ 000000E4  A3 00000251 R	mov v_zero, eax
+ 000000E9  C7 05 00000259 R	mov v_text, offset L_LIT_5
+	   0000035D R
+ 000000F3  68 00000363 R	push offset L_LIT_6
+ 000000F8  E8 00000000 E	call outString
+ 000000FD  68 00000000 R	push offset newline
+ 00000102  E8 00000000 E	call outString
+ 00000107  FF 35 00000241 R	push v_decimal
+ 0000010D  E8 00000000 E	call outUint
+ 00000112  68 00000000 R	push offset newline
+ 00000117  E8 00000000 E	call outString
+ 0000011C  68 0000036F R	push offset L_LIT_7
+ 00000121  E8 00000000 E	call outString
+ 00000126  68 00000000 R	push offset newline
+ 0000012B  E8 00000000 E	call outString
+ 00000130  FF 35 00000249 R	push v_hex
+ 00000136  E8 00000000 E	call outUint
+ 0000013B  68 00000000 R	push offset newline
+ 00000140  E8 00000000 E	call outString
+ 00000145  68 00000379 R	push offset L_LIT_8
+ 0000014A  E8 00000000 E	call outString
+ 0000014F  68 00000000 R	push offset newline
+ 00000154  E8 00000000 E	call outString
+ 00000159  FF 35 00000259 R	push v_text
+ 0000015F  E8 00000000 E	call outString
+ 00000164  68 00000000 R	push offset newline
+ 00000169  E8 00000000 E	call outString
+ 0000016E  68 0000037F R	push offset L_LIT_9
+ 00000173  E8 00000000 E	call outString
+ 00000178  68 00000000 R	push offset newline
+ 0000017D  E8 00000000 E	call outString
+ 00000182  68 00000380 R	push offset L_LIT_10
+ 00000187  E8 00000000 E	call outString
+ 0000018C  68 00000000 R	push offset newline
+ 00000191  E8 00000000 E	call outString
+ 00000196  FF 35 00000399 R	push L_3
+ 0000019C  58			pop eax
+ 0000019D  A3 00000395 R	mov v_a, eax
+ 000001A2  FF 35 00000395 R	push v_a
+ 000001A8  58			pop eax
+ 000001A9  0F AF C0		imul eax, eax
+ 000001AC  50			push eax
+ 000001AD  58			pop eax
+ 000001AE  A3 0000039D R	mov v_square, eax
+ 000001B3  FF 35 00000395 R	push v_a
+ 000001B9  FF 35 0000020C R	push L_2
+ 000001BF  59			pop ecx
+ 000001C0  58			pop eax
+ 000001C1  8B D8		mov ebx, eax
+ 000001C3  83 F9 00		cmp ecx, 0
+ 000001C6  75 07		jne pow_2_start
+ 000001C8  B8 00000001		mov eax, 1
+ 000001CD  EB 0C		jmp pow_2_end
+ 000001CF			pow_2_start:
+ 000001CF  49			dec ecx
+ 000001D0			pow_2_loop:
+ 000001D0  83 F9 00		cmp ecx, 0
+ 000001D3  74 06		je pow_2_end
+ 000001D5  0F AF C3		imul eax, ebx
+ 000001D8  49			dec ecx
+ 000001D9  EB F5		jmp pow_2_loop
+ 000001DB			pow_2_end:
+ 000001DB  50			push eax
+ 000001DC  58			pop eax
+ 000001DD  A3 000003A1 R	mov v_power, eax
+ 000001E2  FF 35 000003A9 R	push L_5
+ 000001E8  58			pop eax
+ 000001E9  0F AF C0		imul eax, eax
+ 000001EC  50			push eax
+ 000001ED  58			pop eax
+ 000001EE  A3 000003A5 R	mov v_directSquare, eax
+ 000001F3  FF 35 0000020C R	push L_2
+ 000001F9  FF 35 00000399 R	push L_3
+ 000001FF  59			pop ecx
+ 00000200  58			pop eax
+ 00000201  8B D8		mov ebx, eax
+ 00000203  83 F9 00		cmp ecx, 0
+ 00000206  75 07		jne pow_3_start
+ 00000208  B8 00000001		mov eax, 1
+ 0000020D  EB 0C		jmp pow_3_end
+ 0000020F			pow_3_start:
+ 0000020F  49			dec ecx
+ 00000210			pow_3_loop:
+ 00000210  83 F9 00		cmp ecx, 0
+ 00000213  74 06		je pow_3_end
+ 00000215  0F AF C3		imul eax, ebx
+ 00000218  49			dec ecx
+ 00000219  EB F5		jmp pow_3_loop
+ 0000021B			pow_3_end:
+ 0000021B  50			push eax
+ 0000021C  58			pop eax
+ 0000021D  A3 000003AD R	mov v_directPower, eax
+ 00000222  68 000003B1 R	push offset L_LIT_11
+ 00000227  E8 00000000 E	call outString
+ 0000022C  68 00000000 R	push offset newline
+ 00000231  E8 00000000 E	call outString
+ 00000236  68 000003B5 R	push offset L_LIT_12
+ 0000023B  E8 00000000 E	call outString
+ 00000240  68 00000000 R	push offset newline
+ 00000245  E8 00000000 E	call outString
+ 0000024A  FF 35 0000039D R	push v_square
+ 00000250  E8 00000000 E	call outUint
+ 00000255  68 00000000 R	push offset newline
+ 0000025A  E8 00000000 E	call outString
+ 0000025F  68 000003BA R	push offset L_LIT_13
+ 00000264  E8 00000000 E	call outString
+ 00000269  68 00000000 R	push offset newline
+ 0000026E  E8 00000000 E	call outString
+ 00000273  FF 35 000003A1 R	push v_power
+ 00000279  E8 00000000 E	call outUint
+ 0000027E  68 00000000 R	push offset newline
+ 00000283  E8 00000000 E	call outString
+ 00000288  68 000003C0 R	push offset L_LIT_14
+ 0000028D  E8 00000000 E	call outString
+ 00000292  68 00000000 R	push offset newline
+ 00000297  E8 00000000 E	call outString
+ 0000029C  FF 35 000003A5 R	push v_directSquare
+ 000002A2  E8 00000000 E	call outUint
+ 000002A7  68 00000000 R	push offset newline
+ 000002AC  E8 00000000 E	call outString
+ 000002B1  68 000003C5 R	push offset L_LIT_15
+ 000002B6  E8 00000000 E	call outString
+ 000002BB  68 00000000 R	push offset newline
+ 000002C0  E8 00000000 E	call outString
+ 000002C5  FF 35 000003AD R	push v_directPower
+ 000002CB  E8 00000000 E	call outUint
+ 000002D0  68 00000000 R	push offset newline
+ 000002D5  E8 00000000 E	call outString
+ 000002DA  68 000003CB R	push offset L_LIT_16
+ 000002DF  E8 00000000 E	call outString
+ 000002E4  68 00000000 R	push offset newline
+ 000002E9  E8 00000000 E	call outString
+ 000002EE  68 000003CC R	push offset L_LIT_17
+ 000002F3  E8 00000000 E	call outString
+ 000002F8  68 00000000 R	push offset newline
+ 000002FD  E8 00000000 E	call outString
+ 00000302  FF 35 000003E5 R	push L_20
+ 00000308  58			pop eax
+ 00000309  A3 00000204 R	mov v_x, eax
+ 0000030E  FF 35 00000399 R	push L_3
+ 00000314  58			pop eax
+ 00000315  A3 00000210 R	mov v_y, eax
+ 0000031A  FF 35 00000204 R	push v_x
+ 00000320  FF 35 00000210 R	push v_y
+ 00000326  5B			pop ebx
+ 00000327  58			pop eax
+ 00000328  03 C3		add eax, ebx
+ 0000032A  50			push eax
+ 0000032B  58			pop eax
+ 0000032C  A3 000003E9 R	mov v_sum, eax
+ 00000331  FF 35 00000204 R	push v_x
+ 00000337  FF 35 00000210 R	push v_y
+ 0000033D  5B			pop ebx
+ 0000033E  58			pop eax
+ 0000033F  2B C3		sub eax, ebx
+ 00000341  50			push eax
+ 00000342  58			pop eax
+ 00000343  A3 000003ED R	mov v_diff, eax
+ 00000348  FF 35 00000204 R	push v_x
+ 0000034E  FF 35 00000210 R	push v_y
+ 00000354  5B			pop ebx
+ 00000355  58			pop eax
+ 00000356  0F AF C3		imul eax, ebx
+ 00000359  50			push eax
+ 0000035A  58			pop eax
+ 0000035B  A3 000003F1 R	mov v_mul, eax
+ 00000360  FF 35 00000204 R	push v_x
+ 00000366  FF 35 00000210 R	push v_y
+ 0000036C  5B			pop ebx
+ 0000036D  58			pop eax
+ 0000036E  83 FB 00		cmp ebx, 0
+ 00000371  74 07		je divsafe_4_zero
+ 00000373  33 D2		xor edx, edx
+ 00000375  F7 F3		div ebx
+ 00000377  50			push eax
+ 00000378  EB 02		jmp divsafe_4_end
+ 0000037A			divsafe_4_zero:
+ 0000037A  6A 00		push 0
+ 0000037C			divsafe_4_end:
+ 0000037C  58			pop eax
+ 0000037D  A3 000003F5 R	mov v_div, eax
+ 00000382  FF 35 00000204 R	push v_x
+ 00000388  FF 35 00000210 R	push v_y
+ 0000038E  5B			pop ebx
+ 0000038F  58			pop eax
+ 00000390  83 FB 00		cmp ebx, 0
+ 00000393  74 07		je modsafe_5_zero
+ 00000395  33 D2		xor edx, edx
+ 00000397  F7 F3		div ebx
+ 00000399  52			push edx
+ 0000039A  EB 02		jmp modsafe_5_end
+ 0000039C			modsafe_5_zero:
+ 0000039C  6A 00		push 0
+ 0000039E			modsafe_5_end:
+ 0000039E  58			pop eax
+ 0000039F  A3 000003F9 R	mov v_mod, eax
+ 000003A4  68 000003FD R	push offset L_LIT_18
+ 000003A9  E8 00000000 E	call outString
+ 000003AE  68 00000000 R	push offset newline
+ 000003B3  E8 00000000 E	call outString
+ 000003B8  68 00000407 R	push offset L_LIT_19
+ 000003BD  E8 00000000 E	call outString
+ 000003C2  68 00000000 R	push offset newline
+ 000003C7  E8 00000000 E	call outString
+ 000003CC  FF 35 000003E9 R	push v_sum
+ 000003D2  E8 00000000 E	call outUint
+ 000003D7  68 00000000 R	push offset newline
+ 000003DC  E8 00000000 E	call outString
+ 000003E1  68 0000040D R	push offset L_LIT_20
+ 000003E6  E8 00000000 E	call outString
+ 000003EB  68 00000000 R	push offset newline
+ 000003F0  E8 00000000 E	call outString
+ 000003F5  FF 35 000003ED R	push v_diff
+ 000003FB  E8 00000000 E	call outUint
+ 00000400  68 00000000 R	push offset newline
+ 00000405  E8 00000000 E	call outString
+ 0000040A  68 00000413 R	push offset L_LIT_21
+ 0000040F  E8 00000000 E	call outString
+ 00000414  68 00000000 R	push offset newline
+ 00000419  E8 00000000 E	call outString
+ 0000041E  FF 35 000003F1 R	push v_mul
+ 00000424  E8 00000000 E	call outUint
+ 00000429  68 00000000 R	push offset newline
+ 0000042E  E8 00000000 E	call outString
+ 00000433  68 00000419 R	push offset L_LIT_22
+ 00000438  E8 00000000 E	call outString
+ 0000043D  68 00000000 R	push offset newline
+ 00000442  E8 00000000 E	call outString
+ 00000447  FF 35 000003F5 R	push v_div
+ 0000044D  E8 00000000 E	call outUint
+ 00000452  68 00000000 R	push offset newline
+ 00000457  E8 00000000 E	call outString
+ 0000045C  68 0000041F R	push offset L_LIT_23
+ 00000461  E8 00000000 E	call outString
+ 00000466  68 00000000 R	push offset newline
+ 0000046B  E8 00000000 E	call outString
+ 00000470  FF 35 000003F9 R	push v_mod
+ 00000476  E8 00000000 E	call outUint
+ 0000047B  68 00000000 R	push offset newline
+ 00000480  E8 00000000 E	call outString
+ 00000485  68 00000425 R	push offset L_LIT_24
+ 0000048A  E8 00000000 E	call outString
+ 0000048F  68 00000000 R	push offset newline
+ 00000494  E8 00000000 E	call outString
+ 00000499  68 00000426 R	push offset L_LIT_25
+ 0000049E  E8 00000000 E	call outString
+ 000004A3  68 00000000 R	push offset newline
+ 000004A8  E8 00000000 E	call outString
+ 000004AD  FF 35 0000020C R	push L_2
+ 000004B3  FF 35 00000399 R	push L_3
+ 000004B9  58			pop eax
+ 000004BA  0F AF C0		imul eax, eax
+ 000004BD  50			push eax
+ 000004BE  5B			pop ebx
+ 000004BF  58			pop eax
+ 000004C0  03 C3		add eax, ebx
+ 000004C2  50			push eax
+ 000004C3  58			pop eax
+ 000004C4  A3 0000043A R	mov v_prio1, eax
+ 000004C9  FF 35 0000020C R	push L_2
+ 000004CF  FF 35 00000399 R	push L_3
+ 000004D5  5B			pop ebx
+ 000004D6  58			pop eax
+ 000004D7  03 C3		add eax, ebx
+ 000004D9  50			push eax
+ 000004DA  58			pop eax
+ 000004DB  0F AF C0		imul eax, eax
+ 000004DE  50			push eax
+ 000004DF  58			pop eax
+ 000004E0  A3 0000043E R	mov v_prio2, eax
+ 000004E5  FF 35 0000020C R	push L_2
+ 000004EB  FF 35 00000399 R	push L_3
+ 000004F1  58			pop eax
+ 000004F2  0F AF C0		imul eax, eax
+ 000004F5  50			push eax
+ 000004F6  5B			pop ebx
+ 000004F7  58			pop eax
+ 000004F8  0F AF C3		imul eax, ebx
+ 000004FB  50			push eax
+ 000004FC  58			pop eax
+ 000004FD  A3 00000442 R	mov v_prio3, eax
+ 00000502  FF 35 0000020C R	push L_2
+ 00000508  FF 35 00000399 R	push L_3
+ 0000050E  59			pop ecx
+ 0000050F  58			pop eax
+ 00000510  8B D8		mov ebx, eax
+ 00000512  83 F9 00		cmp ecx, 0
+ 00000515  75 07		jne pow_6_start
+ 00000517  B8 00000001		mov eax, 1
+ 0000051C  EB 0C		jmp pow_6_end
+ 0000051E			pow_6_start:
+ 0000051E  49			dec ecx
+ 0000051F			pow_6_loop:
+ 0000051F  83 F9 00		cmp ecx, 0
+ 00000522  74 06		je pow_6_end
+ 00000524  0F AF C3		imul eax, ebx
+ 00000527  49			dec ecx
+ 00000528  EB F5		jmp pow_6_loop
+ 0000052A			pow_6_end:
+ 0000052A  50			push eax
+ 0000052B  FF 35 0000020C R	push L_2
+ 00000531  5B			pop ebx
+ 00000532  58			pop eax
+ 00000533  0F AF C3		imul eax, ebx
+ 00000536  50			push eax
+ 00000537  58			pop eax
+ 00000538  A3 00000446 R	mov v_prio4, eax
+ 0000053D  FF 35 00000214 R	push L_10
+ 00000543  FF 35 0000020C R	push L_2
+ 00000549  58			pop eax
+ 0000054A  0F AF C0		imul eax, eax
+ 0000054D  50			push eax
+ 0000054E  5B			pop ebx
+ 0000054F  58			pop eax
+ 00000550  83 FB 00		cmp ebx, 0
+ 00000553  74 07		je divsafe_7_zero
+ 00000555  33 D2		xor edx, edx
+ 00000557  F7 F3		div ebx
+ 00000559  50			push eax
+ 0000055A  EB 02		jmp divsafe_7_end
+ 0000055C			divsafe_7_zero:
+ 0000055C  6A 00		push 0
+ 0000055E			divsafe_7_end:
+ 0000055E  58			pop eax
+ 0000055F  A3 0000044A R	mov v_prio5, eax
+ 00000564  68 0000044E R	push offset L_LIT_26
+ 00000569  E8 00000000 E	call outString
+ 0000056E  68 00000000 R	push offset newline
+ 00000573  E8 00000000 E	call outString
+ 00000578  FF 35 0000043A R	push v_prio1
+ 0000057E  E8 00000000 E	call outUint
+ 00000583  68 00000000 R	push offset newline
+ 00000588  E8 00000000 E	call outString
+ 0000058D  68 00000455 R	push offset L_LIT_27
+ 00000592  E8 00000000 E	call outString
+ 00000597  68 00000000 R	push offset newline
+ 0000059C  E8 00000000 E	call outString
+ 000005A1  FF 35 0000043E R	push v_prio2
+ 000005A7  E8 00000000 E	call outUint
+ 000005AC  68 00000000 R	push offset newline
+ 000005B1  E8 00000000 E	call outString
+ 000005B6  68 0000045E R	push offset L_LIT_28
+ 000005BB  E8 00000000 E	call outString
+ 000005C0  68 00000000 R	push offset newline
+ 000005C5  E8 00000000 E	call outString
+ 000005CA  FF 35 00000442 R	push v_prio3
+ 000005D0  E8 00000000 E	call outUint
+ 000005D5  68 00000000 R	push offset newline
+ 000005DA  E8 00000000 E	call outString
+ 000005DF  68 00000465 R	push offset L_LIT_29
+ 000005E4  E8 00000000 E	call outString
+ 000005E9  68 00000000 R	push offset newline
+ 000005EE  E8 00000000 E	call outString
+ 000005F3  FF 35 00000446 R	push v_prio4
+ 000005F9  E8 00000000 E	call outUint
+ 000005FE  68 00000000 R	push offset newline
+ 00000603  E8 00000000 E	call outString
+ 00000608  68 0000046D R	push offset L_LIT_30
+ 0000060D  E8 00000000 E	call outString
+ 00000612  68 00000000 R	push offset newline
+ 00000617  E8 00000000 E	call outString
+ 0000061C  FF 35 0000044A R	push v_prio5
+ 00000622  E8 00000000 E	call outUint
+ 00000627  68 00000000 R	push offset newline
+ 0000062C  E8 00000000 E	call outString
+ 00000631  68 00000475 R	push offset L_LIT_31
+ 00000636  E8 00000000 E	call outString
+ 0000063B  68 00000000 R	push offset newline
+ 00000640  E8 00000000 E	call outString
+ 00000645  68 00000476 R	push offset L_LIT_32
+ 0000064A  E8 00000000 E	call outString
+ 0000064F  68 00000000 R	push offset newline
+ 00000654  E8 00000000 E	call outString
+ 00000659  FF 35 000003A9 R	push L_5
+ 0000065F  FF 35 00000399 R	push L_3
+ 00000665  5B			pop ebx
+ 00000666  58			pop eax
+ 00000667  3B C3		cmp eax, ebx
+ 00000669  7F 07		jg cmp_true_kpppdmpd
+ 0000066B  B8 00000000		mov eax, 0
+ 00000670  EB 05		jmp cmp_end_kpppdmpd
+ 00000672			cmp_true_kpppdmpd:
+ 00000672  B8 00000001		mov eax, 1
+ 00000677			cmp_end_kpppdmpd:
+ 00000677  50			push eax
+ 00000678  58			pop eax
+ 00000679  A3 0000048F R	mov v_cmp1, eax
+ 0000067E  FF 35 0000020C R	push L_2
+ 00000684  FF 35 0000020C R	push L_2
+ 0000068A  5B			pop ebx
+ 0000068B  58			pop eax
+ 0000068C  3B C3		cmp eax, ebx
+ 0000068E  74 07		je cmp_true_kpppdmpdc
+ 00000690  B8 00000000		mov eax, 0
+ 00000695  EB 05		jmp cmp_end_kpppdmpdc
+ 00000697			cmp_true_kpppdmpdc:
+ 00000697  B8 00000001		mov eax, 1
+ 0000069C			cmp_end_kpppdmpdc:
+ 0000069C  50			push eax
+ 0000069D  58			pop eax
+ 0000069E  A3 00000493 R	mov v_cmp2, eax
+ 000006A3  FF 35 0000049B R	push L_4
+ 000006A9  FF 35 000003A9 R	push L_5
+ 000006AF  5B			pop ebx
+ 000006B0  58			pop eax
+ 000006B1  3B C3		cmp eax, ebx
+ 000006B3  75 07		jne cmp_true_kpppdmpdcc
+ 000006B5  B8 00000000		mov eax, 0
+ 000006BA  EB 05		jmp cmp_end_kpppdmpdcc
+ 000006BC			cmp_true_kpppdmpdcc:
+ 000006BC  B8 00000001		mov eax, 1
+ 000006C1			cmp_end_kpppdmpdcc:
+ 000006C1  50			push eax
+ 000006C2  58			pop eax
+ 000006C3  A3 00000497 R	mov v_cmp3, eax
+ 000006C8  FF 35 00000399 R	push L_3
+ 000006CE  FF 35 000003A9 R	push L_5
+ 000006D4  5B			pop ebx
+ 000006D5  58			pop eax
+ 000006D6  3B C3		cmp eax, ebx
+ 000006D8  7C 07		jl cmp_true_kpppdmpdccc
+ 000006DA  B8 00000000		mov eax, 0
+ 000006DF  EB 05		jmp cmp_end_kpppdmpdccc
+ 000006E1			cmp_true_kpppdmpdccc:
+ 000006E1  B8 00000001		mov eax, 1
+ 000006E6			cmp_end_kpppdmpdccc:
+ 000006E6  50			push eax
+ 000006E7  58			pop eax
+ 000006E8  A3 0000049F R	mov v_cmp4, eax
+ 000006ED  FF 35 000003A9 R	push L_5
+ 000006F3  FF 35 000003A9 R	push L_5
+ 000006F9  5B			pop ebx
+ 000006FA  58			pop eax
+ 000006FB  3B C3		cmp eax, ebx
+ 000006FD  7D 07		jge cmp_true_kpppdmpdcccc
+ 000006FF  B8 00000000		mov eax, 0
+ 00000704  EB 05		jmp cmp_end_kpppdmpdcccc
+ 00000706			cmp_true_kpppdmpdcccc:
+ 00000706  B8 00000001		mov eax, 1
+ 0000070B			cmp_end_kpppdmpdcccc:
+ 0000070B  50			push eax
+ 0000070C  58			pop eax
+ 0000070D  A3 000004A3 R	mov v_cmp5, eax
+ 00000712  FF 35 0000020C R	push L_2
+ 00000718  FF 35 00000399 R	push L_3
+ 0000071E  5B			pop ebx
+ 0000071F  58			pop eax
+ 00000720  3B C3		cmp eax, ebx
+ 00000722  7E 07		jle cmp_true_kpppdmpdccccc
+ 00000724  B8 00000000		mov eax, 0
+ 00000729  EB 05		jmp cmp_end_kpppdmpdccccc
+ 0000072B			cmp_true_kpppdmpdccccc:
+ 0000072B  B8 00000001		mov eax, 1
+ 00000730			cmp_end_kpppdmpdccccc:
+ 00000730  50			push eax
+ 00000731  58			pop eax
+ 00000732  A3 000004A7 R	mov v_cmp6, eax
+ 00000737  68 000004AB R	push offset L_LIT_33
+ 0000073C  E8 00000000 E	call outString
+ 00000741  68 00000000 R	push offset newline
+ 00000746  E8 00000000 E	call outString
+ 0000074B  FF 35 0000048F R	push v_cmp1
+ 00000751  E8 00000000 E	call outUint
+ 00000756  68 00000000 R	push offset newline
+ 0000075B  E8 00000000 E	call outString
+ 00000760  68 000004B1 R	push offset L_LIT_34
+ 00000765  E8 00000000 E	call outString
+ 0000076A  68 00000000 R	push offset newline
+ 0000076F  E8 00000000 E	call outString
+ 00000774  FF 35 00000493 R	push v_cmp2
+ 0000077A  E8 00000000 E	call outUint
+ 0000077F  68 00000000 R	push offset newline
+ 00000784  E8 00000000 E	call outString
+ 00000789  68 000004B8 R	push offset L_LIT_35
+ 0000078E  E8 00000000 E	call outString
+ 00000793  68 00000000 R	push offset newline
+ 00000798  E8 00000000 E	call outString
+ 0000079D  FF 35 00000497 R	push v_cmp3
+ 000007A3  E8 00000000 E	call outUint
+ 000007A8  68 00000000 R	push offset newline
+ 000007AD  E8 00000000 E	call outString
+ 000007B2  68 000004BF R	push offset L_LIT_36
+ 000007B7  E8 00000000 E	call outString
+ 000007BC  68 00000000 R	push offset newline
+ 000007C1  E8 00000000 E	call outString
+ 000007C6  FF 35 0000049F R	push v_cmp4
+ 000007CC  E8 00000000 E	call outUint
+ 000007D1  68 00000000 R	push offset newline
+ 000007D6  E8 00000000 E	call outString
+ 000007DB  68 000004C5 R	push offset L_LIT_37
+ 000007E0  E8 00000000 E	call outString
+ 000007E5  68 00000000 R	push offset newline
+ 000007EA  E8 00000000 E	call outString
+ 000007EF  FF 35 000004A3 R	push v_cmp5
+ 000007F5  E8 00000000 E	call outUint
+ 000007FA  68 00000000 R	push offset newline
+ 000007FF  E8 00000000 E	call outString
+ 00000804  68 000004CC R	push offset L_LIT_38
+ 00000809  E8 00000000 E	call outString
+ 0000080E  68 00000000 R	push offset newline
+ 00000813  E8 00000000 E	call outString
+ 00000818  FF 35 000004A7 R	push v_cmp6
+ 0000081E  E8 00000000 E	call outUint
+ 00000823  68 00000000 R	push offset newline
+ 00000828  E8 00000000 E	call outString
+ 0000082D  68 000004D3 R	push offset L_LIT_39
+ 00000832  E8 00000000 E	call outString
+ 00000837  68 00000000 R	push offset newline
+ 0000083C  E8 00000000 E	call outString
+ 00000841  68 000004D4 R	push offset L_LIT_40
+ 00000846  E8 00000000 E	call outString
+ 0000084B  68 00000000 R	push offset newline
+ 00000850  E8 00000000 E	call outString
+
+ 00000855  FF 35 0000049B R	push L_4
+ 0000085B  E8 FFFFF7A0		call fn_funcA
+ 00000860  50			push eax
+ 00000861  58			pop eax
+ 00000862  A3 000004ED R	mov v_resA, eax
+
+ 00000867  FF 35 0000049B R	push L_4
+ 0000086D  E8 FFFFF7BA		call fn_funcB
+ 00000872  50			push eax
+ 00000873  58			pop eax
+ 00000874  A3 000004F1 R	mov v_resB, eax
+ 00000879  68 000004F5 R	push offset L_LIT_41
+ 0000087E  E8 00000000 E	call outString
+ 00000883  68 00000000 R	push offset newline
+ 00000888  E8 00000000 E	call outString
+ 0000088D  FF 35 000004ED R	push v_resA
+ 00000893  E8 00000000 E	call outUint
+ 00000898  68 00000000 R	push offset newline
+ 0000089D  E8 00000000 E	call outString
+ 000008A2  68 00000500 R	push offset L_LIT_42
+ 000008A7  E8 00000000 E	call outString
+ 000008AC  68 00000000 R	push offset newline
+ 000008B1  E8 00000000 E	call outString
+ 000008B6  FF 35 000004F1 R	push v_resB
+ 000008BC  E8 00000000 E	call outUint
+ 000008C1  68 00000000 R	push offset newline
+ 000008C6  E8 00000000 E	call outString
+ 000008CB  68 0000050B R	push offset L_LIT_43
+ 000008D0  E8 00000000 E	call outString
+ 000008D5  68 00000000 R	push offset newline
+ 000008DA  E8 00000000 E	call outString
+ 000008DF  68 0000050C R	push offset L_LIT_44
+ 000008E4  E8 00000000 E	call outString
+ 000008E9  68 00000000 R	push offset newline
+ 000008EE  E8 00000000 E	call outString
+ 000008F3  FF 35 0000021C R	push L_1
+ 000008F9  58			pop eax
+ 000008FA  A3 00000517 R	mov v_i, eax
+ 000008FF			while_1_start:
+ 000008FF  FF 35 00000517 R	push v_i
+ 00000905  FF 35 0000020C R	push L_2
+ 0000090B  5B			pop ebx
+ 0000090C  58			pop eax
+ 0000090D  3B C3		cmp eax, ebx
+ 0000090F  7E 07		jle cmp_true_kpppdmpdcccccc
+ 00000911  B8 00000000		mov eax, 0
+ 00000916  EB 05		jmp cmp_end_kpppdmpdcccccc
+ 00000918			cmp_true_kpppdmpdcccccc:
+ 00000918  B8 00000001		mov eax, 1
+ 0000091D			cmp_end_kpppdmpdcccccc:
+ 0000091D  50			push eax
+ 0000091E  58			pop eax
+ 0000091F  83 F8 00		cmp eax, 0
+ 00000922  74 7F		je while_1_end
+ 00000924  FF 35 00000517 R	push v_i
+ 0000092A  58			pop eax
+ 0000092B  0F AF C0		imul eax, eax
+ 0000092E  50			push eax
+ 0000092F  58			pop eax
+ 00000930  A3 0000051B R	mov v_temp, eax
+ 00000935  68 0000051F R	push offset L_LIT_45
+ 0000093A  E8 00000000 E	call outString
+ 0000093F  68 00000000 R	push offset newline
+ 00000944  E8 00000000 E	call outString
+ 00000949  FF 35 00000517 R	push v_i
+ 0000094F  E8 00000000 E	call outUint
+ 00000954  68 00000000 R	push offset newline
+ 00000959  E8 00000000 E	call outString
+ 0000095E  68 00000522 R	push offset L_LIT_46
+ 00000963  E8 00000000 E	call outString
+ 00000968  68 00000000 R	push offset newline
+ 0000096D  E8 00000000 E	call outString
+ 00000972  FF 35 0000051B R	push v_temp
+ 00000978  E8 00000000 E	call outUint
+ 0000097D  68 00000000 R	push offset newline
+ 00000982  E8 00000000 E	call outString
+ 00000987  FF 35 00000517 R	push v_i
+ 0000098D  FF 35 0000021C R	push L_1
+ 00000993  5B			pop ebx
+ 00000994  58			pop eax
+ 00000995  03 C3		add eax, ebx
+ 00000997  50			push eax
+ 00000998  58			pop eax
+ 00000999  A3 00000517 R	mov v_i, eax
+ 0000099E  E9 FFFFFF5C		jmp while_1_start
+ 000009A3			while_1_end:
+ 000009A3  68 00000526 R	push offset L_LIT_47
+ 000009A8  E8 00000000 E	call outString
+ 000009AD  68 00000000 R	push offset newline
+ 000009B2  E8 00000000 E	call outString
+ 000009B7  68 00000527 R	push offset L_LIT_48
+ 000009BC  E8 00000000 E	call outString
+ 000009C1  68 00000000 R	push offset newline
+ 000009C6  E8 00000000 E	call outString
+ 000009CB  FF 35 0000020C R	push L_2
+ 000009D1  58			pop eax
+ 000009D2  A3 00000538 R	mov v_val, eax
+				; --- switch ---
+ 000009D7  A1 00000538 R	mov eax, v_val
+ 000009DC  83 F8 01		cmp eax, 1
+ 000009DF  74 07		je case_2_0
+ 000009E1  83 F8 02		cmp eax, 2
+ 000009E4  74 18		je case_2_1
+ 000009E6  EB 2C		jmp default_2
+ 000009E8			case_2_0:
+ 000009E8  68 0000053C R	push offset L_LIT_49
+ 000009ED  E8 00000000 E	call outString
+ 000009F2  68 00000000 R	push offset newline
+ 000009F7  E8 00000000 E	call outString
+ 000009FC  EB 2A		jmp switch_2_end
+ 000009FE			case_2_1:
+ 000009FE  68 00000540 R	push offset L_LIT_50
+ 00000A03  E8 00000000 E	call outString
+ 00000A08  68 00000000 R	push offset newline
+ 00000A0D  E8 00000000 E	call outString
+ 00000A12  EB 14		jmp switch_2_end
+ 00000A14			default_2:
+ 00000A14  68 00000544 R	push offset L_LIT_51
+ 00000A19  E8 00000000 E	call outString
+ 00000A1E  68 00000000 R	push offset newline
+ 00000A23  E8 00000000 E	call outString
+ 00000A28			switch_2_end:
+
+ 00000A28  FF 35 0000020C R	push L_2
+ 00000A2E  E8 FFFFF642		call fn_getNum
+ 00000A33  A3 00000549 R	mov v_word, eax
+
+ 00000A38  FF 35 000003A9 R	push L_5
+ 00000A3E  E8 FFFFF632		call fn_getNum
+ 00000A43  A3 0000064D R	mov v_wordDefault, eax
+ 00000A48  68 00000751 R	push offset L_LIT_52
+ 00000A4D  E8 00000000 E	call outString
+ 00000A52  68 00000000 R	push offset newline
+ 00000A57  E8 00000000 E	call outString
+ 00000A5C  FF 35 00000549 R	push v_word
+ 00000A62  E8 00000000 E	call outString
+ 00000A67  68 00000000 R	push offset newline
+ 00000A6C  E8 00000000 E	call outString
+ 00000A71  68 0000075D R	push offset L_LIT_53
+ 00000A76  E8 00000000 E	call outString
+ 00000A7B  68 00000000 R	push offset newline
+ 00000A80  E8 00000000 E	call outString
+ 00000A85  FF 35 0000064D R	push v_wordDefault
+ 00000A8B  E8 00000000 E	call outString
+ 00000A90  68 00000000 R	push offset newline
+ 00000A95  E8 00000000 E	call outString
+ 00000A9A  68 00000769 R	push offset L_LIT_54
+ 00000A9F  E8 00000000 E	call outString
+ 00000AA4  68 00000000 R	push offset newline
+ 00000AA9  E8 00000000 E	call outString
+ 00000AAE  68 0000076A R	push offset L_LIT_55
+ 00000AB3  E8 00000000 E	call outString
+ 00000AB8  68 00000000 R	push offset newline
+ 00000ABD  E8 00000000 E	call outString
+
+ 00000AC2  68 00000889 R	push offset L_LIT_57
+ 00000AC7  68 00000883 R	push offset L_LIT_56
+ 00000ACC  68 00000004 R	push offset buffer
+ 00000AD1  E8 00000000 E	call stringConcat
+				; Copy string from buffer to variable's buffer
+ 00000AD6  56			push esi
+ 00000AD7  57			push edi
+ 00000AD8  8B F0		mov esi, eax
+ 00000ADA  BF 00000783 R	mov edi, offset v_concat_buf
+ 00000ADF			copy_15_loop:
+ 00000ADF  8A 06		mov al, [esi]
+ 00000AE1  88 07		mov [edi], al
+ 00000AE3  3C 00		cmp al, 0
+ 00000AE5  74 04		je copy_15_end
+ 00000AE7  46			inc esi
+ 00000AE8  47			inc edi
+ 00000AE9  EB F4		jmp copy_15_loop
+ 00000AEB			copy_15_end:
+ 00000AEB  5F			pop edi
+ 00000AEC  5E			pop esi
+ 00000AED  C7 05 0000077F R	mov v_concat, offset v_concat_buf
+	   00000783 R
+
+ 00000AF7  68 00000893 R	push offset L_LIT_58
+ 00000AFC  68 00000004 R	push offset buffer
+ 00000B01  E8 00000000 E	call stringLength
+ 00000B06  50			push eax
+ 00000B07  58			pop eax
+ 00000B08  A3 0000088F R	mov v_length, eax
+
+ 00000B0D  68 0000089D R	push offset L_LIT_59
+ 00000B12  68 00000004 R	push offset buffer
+ 00000B17  E8 00000000 E	call stringToUnsigned
+ 00000B1C  50			push eax
+ 00000B1D  58			pop eax
+ 00000B1E  A3 00000899 R	mov v_fromStr, eax
+
+ 00000B23  FF 35 000009A5 R	push L_456
+ 00000B29  68 00000004 R	push offset buffer
+ 00000B2E  E8 00000000 E	call unsignedToString
+				; Copy string from buffer to variable's buffer
+ 00000B33  56			push esi
+ 00000B34  57			push edi
+ 00000B35  8B F0		mov esi, eax
+ 00000B37  BF 000008A5 R	mov edi, offset v_toStr_buf
+ 00000B3C			copy_16_loop:
+ 00000B3C  8A 06		mov al, [esi]
+ 00000B3E  88 07		mov [edi], al
+ 00000B40  3C 00		cmp al, 0
+ 00000B42  74 04		je copy_16_end
+ 00000B44  46			inc esi
+ 00000B45  47			inc edi
+ 00000B46  EB F4		jmp copy_16_loop
+ 00000B48			copy_16_end:
+ 00000B48  5F			pop edi
+ 00000B49  5E			pop esi
+ 00000B4A  C7 05 000008A1 R	mov v_toStr, offset v_toStr_buf
+	   000008A5 R
+ 00000B54  68 000009A9 R	push offset L_LIT_60
+ 00000B59  E8 00000000 E	call outString
+ 00000B5E  68 00000000 R	push offset newline
+ 00000B63  E8 00000000 E	call outString
+ 00000B68  FF 35 0000077F R	push v_concat
+ 00000B6E  E8 00000000 E	call outString
+ 00000B73  68 00000000 R	push offset newline
+ 00000B78  E8 00000000 E	call outString
+ 00000B7D  68 000009C6 R	push offset L_LIT_61
+ 00000B82  E8 00000000 E	call outString
+ 00000B87  68 00000000 R	push offset newline
+ 00000B8C  E8 00000000 E	call outString
+ 00000B91  FF 35 0000088F R	push v_length
+ 00000B97  E8 00000000 E	call outUint
+ 00000B9C  68 00000000 R	push offset newline
+ 00000BA1  E8 00000000 E	call outString
+ 00000BA6  68 000009DC R	push offset L_LIT_62
+ 00000BAB  E8 00000000 E	call outString
+ 00000BB0  68 00000000 R	push offset newline
+ 00000BB5  E8 00000000 E	call outString
+ 00000BBA  FF 35 00000899 R	push v_fromStr
+ 00000BC0  E8 00000000 E	call outUint
+ 00000BC5  68 00000000 R	push offset newline
+ 00000BCA  E8 00000000 E	call outString
+ 00000BCF  68 000009F4 R	push offset L_LIT_63
+ 00000BD4  E8 00000000 E	call outString
+ 00000BD9  68 00000000 R	push offset newline
+ 00000BDE  E8 00000000 E	call outString
+ 00000BE3  FF 35 000008A1 R	push v_toStr
+ 00000BE9  E8 00000000 E	call outString
+ 00000BEE  68 00000000 R	push offset newline
+ 00000BF3  E8 00000000 E	call outString
+
+ 00000BF8  6A 00		push 0
+ 00000BFA  E8 00000000 E	call ExitProcess
+ 00000BFF			main ENDP
+				end main
+Microsoft (R) Macro Assembler Version 14.44.35217.0	    12/18/25 01:08:16
+out.asm							     Symbols 2 - 1
+
+
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+CONST  . . . . . . . . . . . . .	32 Bit	 00000003 Para	  Public  'CONST'	 ReadOnly
+FLAT . . . . . . . . . . . . . .	GROUP
+STACK  . . . . . . . . . . . . .	32 Bit	 00001000 Para	  Stack	  'STACK'	 
+_DATA  . . . . . . . . . . . . .	32 Bit	 00000A0C Para	  Public  'DATA'	
+_TEXT  . . . . . . . . . . . . .	32 Bit	 00000BFF Para	  Public  'CODE'	
+
+
+Procedures, parameters, and locals:
+
+                N a m e                 Type     Value    Attr
+
+ExitProcess  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+fn_funcA . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 0000002C Public STDCALL
+  p_x  . . . . . . . . . . . . .	DWord	 bp + 00000008
+fn_funcB . . . . . . . . . . . .	P Near	 0000002C _TEXT	Length= 00000049 Public STDCALL
+  p_y  . . . . . . . . . . . . .	DWord	 bp + 00000008
+  pow_1_start  . . . . . . . . .	L Near	 00000061 _TEXT	
+  pow_1_loop . . . . . . . . . .	L Near	 00000062 _TEXT	
+  pow_1_end  . . . . . . . . . .	L Near	 0000006D _TEXT	
+fn_getNum  . . . . . . . . . . .	P Near	 00000075 _TEXT	Length= 0000003C Public STDCALL
+  p_n  . . . . . . . . . . . . .	DWord	 bp + 00000008
+  case_1_0 . . . . . . . . . . .	L Near	 00000089 _TEXT	
+  case_1_1 . . . . . . . . . . .	L Near	 00000097 _TEXT	
+  default_1  . . . . . . . . . .	L Near	 000000A5 _TEXT	
+  switch_1_end . . . . . . . . .	L Near	 000000B1 _TEXT	
+main . . . . . . . . . . . . . .	P Near	 000000B1 _TEXT	Length= 00000B4E Public STDCALL
+  pow_2_start  . . . . . . . . .	L Near	 000001CF _TEXT	
+  pow_2_loop . . . . . . . . . .	L Near	 000001D0 _TEXT	
+  pow_2_end  . . . . . . . . . .	L Near	 000001DB _TEXT	
+  pow_3_start  . . . . . . . . .	L Near	 0000020F _TEXT	
+  pow_3_loop . . . . . . . . . .	L Near	 00000210 _TEXT	
+  pow_3_end  . . . . . . . . . .	L Near	 0000021B _TEXT	
+  divsafe_4_zero . . . . . . . .	L Near	 0000037A _TEXT	
+  divsafe_4_end  . . . . . . . .	L Near	 0000037C _TEXT	
+  modsafe_5_zero . . . . . . . .	L Near	 0000039C _TEXT	
+  modsafe_5_end  . . . . . . . .	L Near	 0000039E _TEXT	
+  pow_6_start  . . . . . . . . .	L Near	 0000051E _TEXT	
+  pow_6_loop . . . . . . . . . .	L Near	 0000051F _TEXT	
+  pow_6_end  . . . . . . . . . .	L Near	 0000052A _TEXT	
+  divsafe_7_zero . . . . . . . .	L Near	 0000055C _TEXT	
+  divsafe_7_end  . . . . . . . .	L Near	 0000055E _TEXT	
+  cmp_true_kpppdmpd  . . . . . .	L Near	 00000672 _TEXT	
+  cmp_end_kpppdmpd . . . . . . .	L Near	 00000677 _TEXT	
+  cmp_true_kpppdmpdc . . . . . .	L Near	 00000697 _TEXT	
+  cmp_end_kpppdmpdc  . . . . . .	L Near	 0000069C _TEXT	
+  cmp_true_kpppdmpdcc  . . . . .	L Near	 000006BC _TEXT	
+  cmp_end_kpppdmpdcc . . . . . .	L Near	 000006C1 _TEXT	
+  cmp_true_kpppdmpdccc . . . . .	L Near	 000006E1 _TEXT	
+  cmp_end_kpppdmpdccc  . . . . .	L Near	 000006E6 _TEXT	
+  cmp_true_kpppdmpdcccc  . . . .	L Near	 00000706 _TEXT	
+  cmp_end_kpppdmpdcccc . . . . .	L Near	 0000070B _TEXT	
+  cmp_true_kpppdmpdccccc . . . .	L Near	 0000072B _TEXT	
+  cmp_end_kpppdmpdccccc  . . . .	L Near	 00000730 _TEXT	
+  while_1_start  . . . . . . . .	L Near	 000008FF _TEXT	
+  cmp_true_kpppdmpdcccccc  . . .	L Near	 00000918 _TEXT	
+  cmp_end_kpppdmpdcccccc . . . .	L Near	 0000091D _TEXT	
+  while_1_end  . . . . . . . . .	L Near	 000009A3 _TEXT	
+  case_2_0 . . . . . . . . . . .	L Near	 000009E8 _TEXT	
+  case_2_1 . . . . . . . . . . .	L Near	 000009FE _TEXT	
+  default_2  . . . . . . . . . .	L Near	 00000A14 _TEXT	
+  switch_2_end . . . . . . . . .	L Near	 00000A28 _TEXT	
+  copy_15_loop . . . . . . . . .	L Near	 00000ADF _TEXT	
+  copy_15_end  . . . . . . . . .	L Near	 00000AEB _TEXT	
+  copy_16_loop . . . . . . . . .	L Near	 00000B3C _TEXT	
+  copy_16_end  . . . . . . . . .	L Near	 00000B48 _TEXT	
+outString  . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+outUint  . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+stringConcat . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+stringLength . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+stringToUnsigned . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+unsignedToString . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+@CodeSize  . . . . . . . . . . .	Number	 00000000h   
+@DataSize  . . . . . . . . . . .	Number	 00000000h   
+@Interface . . . . . . . . . . .	Number	 00000003h   
+@Model . . . . . . . . . . . . .	Number	 00000007h   
+@code  . . . . . . . . . . . . .	Text   	 _TEXT
+@data  . . . . . . . . . . . . .	Text   	 FLAT
+@fardata?  . . . . . . . . . . .	Text   	 FLAT
+@fardata . . . . . . . . . . . .	Text   	 FLAT
+@stack . . . . . . . . . . . . .	Text   	 FLAT
+L_0  . . . . . . . . . . . . . .	DWord	 00000255 _DATA	
+L_10 . . . . . . . . . . . . . .	DWord	 00000214 _DATA	
+L_1  . . . . . . . . . . . . . .	DWord	 0000021C _DATA	
+L_20 . . . . . . . . . . . . . .	DWord	 000003E5 _DATA	
+L_255  . . . . . . . . . . . . .	DWord	 0000024D _DATA	
+L_2  . . . . . . . . . . . . . .	DWord	 0000020C _DATA	
+L_3  . . . . . . . . . . . . . .	DWord	 00000399 _DATA	
+L_42 . . . . . . . . . . . . . .	DWord	 00000245 _DATA	
+L_456  . . . . . . . . . . . . .	DWord	 000009A5 _DATA	
+L_4  . . . . . . . . . . . . . .	DWord	 0000049B _DATA	
+L_5  . . . . . . . . . . . . . .	DWord	 000003A9 _DATA	
+L_LIT_10 . . . . . . . . . . . .	Byte	 00000380 _DATA	
+L_LIT_11 . . . . . . . . . . . .	Byte	 000003B1 _DATA	
+L_LIT_12 . . . . . . . . . . . .	Byte	 000003B5 _DATA	
+L_LIT_13 . . . . . . . . . . . .	Byte	 000003BA _DATA	
+L_LIT_14 . . . . . . . . . . . .	Byte	 000003C0 _DATA	
+L_LIT_15 . . . . . . . . . . . .	Byte	 000003C5 _DATA	
+L_LIT_16 . . . . . . . . . . . .	Byte	 000003CB _DATA	
+L_LIT_17 . . . . . . . . . . . .	Byte	 000003CC _DATA	
+L_LIT_18 . . . . . . . . . . . .	Byte	 000003FD _DATA	
+L_LIT_19 . . . . . . . . . . . .	Byte	 00000407 _DATA	
+L_LIT_1  . . . . . . . . . . . .	Byte	 00000220 _DATA	
+L_LIT_20 . . . . . . . . . . . .	Byte	 0000040D _DATA	
+L_LIT_21 . . . . . . . . . . . .	Byte	 00000413 _DATA	
+L_LIT_22 . . . . . . . . . . . .	Byte	 00000419 _DATA	
+L_LIT_23 . . . . . . . . . . . .	Byte	 0000041F _DATA	
+L_LIT_24 . . . . . . . . . . . .	Byte	 00000425 _DATA	
+L_LIT_25 . . . . . . . . . . . .	Byte	 00000426 _DATA	
+L_LIT_26 . . . . . . . . . . . .	Byte	 0000044E _DATA	
+L_LIT_27 . . . . . . . . . . . .	Byte	 00000455 _DATA	
+L_LIT_28 . . . . . . . . . . . .	Byte	 0000045E _DATA	
+L_LIT_29 . . . . . . . . . . . .	Byte	 00000465 _DATA	
+L_LIT_2  . . . . . . . . . . . .	Byte	 00000224 _DATA	
+L_LIT_30 . . . . . . . . . . . .	Byte	 0000046D _DATA	
+L_LIT_31 . . . . . . . . . . . .	Byte	 00000475 _DATA	
+L_LIT_32 . . . . . . . . . . . .	Byte	 00000476 _DATA	
+L_LIT_33 . . . . . . . . . . . .	Byte	 000004AB _DATA	
+L_LIT_34 . . . . . . . . . . . .	Byte	 000004B1 _DATA	
+L_LIT_35 . . . . . . . . . . . .	Byte	 000004B8 _DATA	
+L_LIT_36 . . . . . . . . . . . .	Byte	 000004BF _DATA	
+L_LIT_37 . . . . . . . . . . . .	Byte	 000004C5 _DATA	
+L_LIT_38 . . . . . . . . . . . .	Byte	 000004CC _DATA	
+L_LIT_39 . . . . . . . . . . . .	Byte	 000004D3 _DATA	
+L_LIT_3  . . . . . . . . . . . .	Byte	 00000228 _DATA	
+L_LIT_40 . . . . . . . . . . . .	Byte	 000004D4 _DATA	
+L_LIT_41 . . . . . . . . . . . .	Byte	 000004F5 _DATA	
+L_LIT_42 . . . . . . . . . . . .	Byte	 00000500 _DATA	
+L_LIT_43 . . . . . . . . . . . .	Byte	 0000050B _DATA	
+L_LIT_44 . . . . . . . . . . . .	Byte	 0000050C _DATA	
+L_LIT_45 . . . . . . . . . . . .	Byte	 0000051F _DATA	
+L_LIT_46 . . . . . . . . . . . .	Byte	 00000522 _DATA	
+L_LIT_47 . . . . . . . . . . . .	Byte	 00000526 _DATA	
+L_LIT_48 . . . . . . . . . . . .	Byte	 00000527 _DATA	
+L_LIT_49 . . . . . . . . . . . .	Byte	 0000053C _DATA	
+L_LIT_4  . . . . . . . . . . . .	Byte	 0000022E _DATA	
+L_LIT_50 . . . . . . . . . . . .	Byte	 00000540 _DATA	
+L_LIT_51 . . . . . . . . . . . .	Byte	 00000544 _DATA	
+L_LIT_52 . . . . . . . . . . . .	Byte	 00000751 _DATA	
+L_LIT_53 . . . . . . . . . . . .	Byte	 0000075D _DATA	
+L_LIT_54 . . . . . . . . . . . .	Byte	 00000769 _DATA	
+L_LIT_55 . . . . . . . . . . . .	Byte	 0000076A _DATA	
+L_LIT_56 . . . . . . . . . . . .	Byte	 00000883 _DATA	
+L_LIT_57 . . . . . . . . . . . .	Byte	 00000889 _DATA	
+L_LIT_58 . . . . . . . . . . . .	Byte	 00000893 _DATA	
+L_LIT_59 . . . . . . . . . . . .	Byte	 0000089D _DATA	
+L_LIT_5  . . . . . . . . . . . .	Byte	 0000035D _DATA	
+L_LIT_60 . . . . . . . . . . . .	Byte	 000009A9 _DATA	
+L_LIT_61 . . . . . . . . . . . .	Byte	 000009C6 _DATA	
+L_LIT_62 . . . . . . . . . . . .	Byte	 000009DC _DATA	
+L_LIT_63 . . . . . . . . . . . .	Byte	 000009F4 _DATA	
+L_LIT_6  . . . . . . . . . . . .	Byte	 00000363 _DATA	
+L_LIT_7  . . . . . . . . . . . .	Byte	 0000036F _DATA	
+L_LIT_8  . . . . . . . . . . . .	Byte	 00000379 _DATA	
+L_LIT_9  . . . . . . . . . . . .	Byte	 0000037F _DATA	
+buffer . . . . . . . . . . . . .	Byte	 00000004 _DATA	
+newline  . . . . . . . . . . . .	Byte	 00000000 CONST	
+temp_str_buf . . . . . . . . . .	Byte	 00000104 _DATA	
+temp . . . . . . . . . . . . . .	DWord	 00000000 _DATA	
+v_a  . . . . . . . . . . . . . .	DWord	 00000395 _DATA	
+v_cmp1 . . . . . . . . . . . . .	DWord	 0000048F _DATA	
+v_cmp2 . . . . . . . . . . . . .	DWord	 00000493 _DATA	
+v_cmp3 . . . . . . . . . . . . .	DWord	 00000497 _DATA	
+v_cmp4 . . . . . . . . . . . . .	DWord	 0000049F _DATA	
+v_cmp5 . . . . . . . . . . . . .	DWord	 000004A3 _DATA	
+v_cmp6 . . . . . . . . . . . . .	DWord	 000004A7 _DATA	
+v_concat_buf . . . . . . . . . .	Byte	 00000783 _DATA	
+v_concat . . . . . . . . . . . .	DWord	 0000077F _DATA	
+v_decimal  . . . . . . . . . . .	DWord	 00000241 _DATA	
+v_diff . . . . . . . . . . . . .	DWord	 000003ED _DATA	
+v_directPower  . . . . . . . . .	DWord	 000003AD _DATA	
+v_directSquare . . . . . . . . .	DWord	 000003A5 _DATA	
+v_div  . . . . . . . . . . . . .	DWord	 000003F5 _DATA	
+v_fromStr  . . . . . . . . . . .	DWord	 00000899 _DATA	
+v_hex  . . . . . . . . . . . . .	DWord	 00000249 _DATA	
+v_i  . . . . . . . . . . . . . .	DWord	 00000517 _DATA	
+v_length . . . . . . . . . . . .	DWord	 0000088F _DATA	
+v_local  . . . . . . . . . . . .	DWord	 00000208 _DATA	
+v_mod  . . . . . . . . . . . . .	DWord	 000003F9 _DATA	
+v_mul  . . . . . . . . . . . . .	DWord	 000003F1 _DATA	
+v_n  . . . . . . . . . . . . . .	DWord	 00000218 _DATA	
+v_power  . . . . . . . . . . . .	DWord	 000003A1 _DATA	
+v_prio1  . . . . . . . . . . . .	DWord	 0000043A _DATA	
+v_prio2  . . . . . . . . . . . .	DWord	 0000043E _DATA	
+v_prio3  . . . . . . . . . . . .	DWord	 00000442 _DATA	
+v_prio4  . . . . . . . . . . . .	DWord	 00000446 _DATA	
+v_prio5  . . . . . . . . . . . .	DWord	 0000044A _DATA	
+v_resA . . . . . . . . . . . . .	DWord	 000004ED _DATA	
+v_resB . . . . . . . . . . . . .	DWord	 000004F1 _DATA	
+v_square . . . . . . . . . . . .	DWord	 0000039D _DATA	
+v_sum  . . . . . . . . . . . . .	DWord	 000003E9 _DATA	
+v_temp . . . . . . . . . . . . .	DWord	 0000051B _DATA	
+v_text_buf . . . . . . . . . . .	Byte	 0000025D _DATA	
+v_text . . . . . . . . . . . . .	DWord	 00000259 _DATA	
+v_toStr_buf  . . . . . . . . . .	Byte	 000008A5 _DATA	
+v_toStr  . . . . . . . . . . . .	DWord	 000008A1 _DATA	
+v_val  . . . . . . . . . . . . .	DWord	 00000538 _DATA	
+v_wordDefault_buf  . . . . . . .	Byte	 00000651 _DATA	
+v_wordDefault  . . . . . . . . .	DWord	 0000064D _DATA	
+v_word_buf . . . . . . . . . . .	Byte	 0000054D _DATA	
+v_word . . . . . . . . . . . . .	DWord	 00000549 _DATA	
+v_x  . . . . . . . . . . . . . .	DWord	 00000204 _DATA	
+v_y  . . . . . . . . . . . . . .	DWord	 00000210 _DATA	
+v_zero . . . . . . . . . . . . .	DWord	 00000251 _DATA	
+
+	   0 Warnings
+	   0 Errors

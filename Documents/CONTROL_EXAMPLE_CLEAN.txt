@@ -1,0 +1,312 @@
+uint function factorial(uint n) {
+    adv uint result = 1;
+    adv uint counter = n;
+    while (counter > 0) {
+        result = result * counter;
+        counter = counter - 1;
+    }
+    return result;
+}
+
+uint function power(uint base, uint exp) {
+    return base ^ exp;
+}
+
+uint function square(uint x) {
+    return x&;
+}
+
+uint function sumOfSquares(uint a, uint b) {
+    return a& + b&;
+}
+
+uint function complexCalc(uint a, uint b, uint c) {
+    return (a + b)& * c - a ^ 2 + b % c;
+}
+
+string function greet(string name) {
+    return stringConcat("Hello, ", name);
+}
+
+string function numberToWord(uint n) {
+    switch(n) {
+        case 0: return "zero";
+        case 1: return "one";
+        case 2: return "two";
+        case 3: return "three";
+        case 4: return "four";
+        case 5: return "five";
+        default: return "many";
+    }
+}
+
+main {
+    cout "========================================";
+    cout "  BDV-2025 COMPILER - FULL DEMO";
+    cout "========================================";
+    
+    cout "";
+    cout "=== 1. TYPES AND LITERALS ===";
+    
+    adv uint decimal = 42;
+    adv uint hexadecimal = 0xFF;
+    adv uint zero = 0;
+    adv string text = "Hello World!";
+    adv string empty = "";
+    
+    cout "Decimal:"; cout decimal;
+    cout "Hexadecimal:"; cout hexadecimal;
+    cout "Zero:"; cout zero;
+    cout "Text:"; cout text;
+    
+    cout "";
+    cout "=== 2. ARITHMETIC OPERATIONS ===";
+    
+    adv uint a = 20;
+    adv uint b = 3;
+    
+    adv uint sum = a + b;
+    adv uint diff = a - b;
+    adv uint prod = a * b;
+    adv uint quot = a / b;
+    adv uint rem = a % b;
+    
+    cout "a=20, b=3";
+    cout "a+b:"; cout sum;
+    cout "a-b:"; cout diff;
+    cout "a*b:"; cout prod;
+    cout "a/b:"; cout quot;
+    cout "a%b:"; cout rem;
+    
+    cout "";
+    cout "=== 3. SQUARE OPERATOR & ===";
+    
+    adv uint x = 5;
+    adv uint xSquare = x&;
+    adv uint directSquare = 7&;
+    adv uint exprSquare = (2 + 3)&;
+    adv uint nestedSquare = (x&)&;
+    adv uint combSquare = 2& + 3& + 4&;
+    
+    cout "x=5";
+    cout "x&:"; cout xSquare;
+    cout "7&:"; cout directSquare;
+    cout "(2+3)&:"; cout exprSquare;
+    cout "((5&)&):"; cout nestedSquare;
+    cout "2&+3&+4&:"; cout combSquare;
+    
+    cout "";
+    cout "=== 4. POWER OPERATOR ^ ===";
+    
+    adv uint pow1 = 2 ^ 3;
+    adv uint pow2 = 3 ^ 2;
+    adv uint pow3 = 10 ^ 0;
+    adv uint pow4 = 5 ^ 1;
+    adv uint powSquare = (2 ^ 3)&;
+    
+    cout "2^3:"; cout pow1;
+    cout "3^2:"; cout pow2;
+    cout "10^0:"; cout pow3;
+    cout "5^1:"; cout pow4;
+    cout "(2^3)&:"; cout powSquare;
+    
+    cout "";
+    cout "=== 5. COMPARISON OPERATIONS ===";
+    
+    adv uint val1 = 10;
+    adv uint val2 = 5;
+    adv uint val3 = 10;
+    
+    adv uint eq = (val1 == val3);
+    adv uint neq = (val1 != val2);
+    adv uint gt = (val1 > val2);
+    adv uint lt = (val2 < val1);
+    adv uint gte = (val1 >= val3);
+    adv uint lte = (val2 <= val1);
+    
+    cout "val1=10, val2=5, val3=10";
+    cout "10==10:"; cout eq;
+    cout "10!=5:"; cout neq;
+    cout "10>5:"; cout gt;
+    cout "5<10:"; cout lt;
+    cout "10>=10:"; cout gte;
+    cout "5<=10:"; cout lte;
+    
+    cout "";
+    cout "=== 6. COMPLEX EXPRESSIONS ===";
+    
+    adv uint expr1 = 2 + 3 * 4;
+    adv uint expr2 = (2 + 3) * 4;
+    adv uint expr3 = 10 / 2 + 3;
+    adv uint expr4 = 2& * 3 + 4&;
+    adv uint expr5 = (1 + 2)& * (3 + 4)&;
+    adv uint expr6 = 2 ^ 3 + 5 * 2&;
+    
+    cout "2+3*4:"; cout expr1;
+    cout "(2+3)*4:"; cout expr2;
+    cout "10/2+3:"; cout expr3;
+    cout "2&*3+4&:"; cout expr4;
+    cout "(1+2)&*(3+4)&:"; cout expr5;
+    cout "2^3+5*2&:"; cout expr6;
+    
+    cout "";
+    cout "=== 7. STRING OPERATIONS ===";
+    
+    adv string str1 = "Hello";
+    adv string str2 = "World";
+    adv string concat = stringConcat(str1, str2);
+    adv uint len1 = stringLength(str1);
+    adv uint len2 = stringLength(concat);
+    
+    cout "str1:"; cout str1;
+    cout "str2:"; cout str2;
+    cout "concat:"; cout concat;
+    cout "len(str1):"; cout len1;
+    cout "len(concat):"; cout len2;
+    
+    adv uint numFromStr = stringToUnsigned("123");
+    adv string strFromNum = unsignedToString(456);
+    
+    cout "stringToUnsigned(123):"; cout numFromStr;
+    cout "unsignedToString(456):"; cout strFromNum;
+    
+    cout "";
+    cout "=== 8. USER FUNCTIONS ===";
+    
+    adv uint fact5 = factorial(5);
+    adv uint pow23 = power(2, 10);
+    adv uint sq7 = square(7);
+    adv uint pythagoras = sumOfSquares(3, 4);
+    adv uint complex = complexCalc(5, 3, 2);
+    
+    cout "factorial(5):"; cout fact5;
+    cout "power(2,10):"; cout pow23;
+    cout "square(7):"; cout sq7;
+    cout "sumOfSquares(3,4):"; cout pythagoras;
+    cout "complexCalc(5,3,2):"; cout complex;
+    
+    adv string greeting = greet("Alice");
+    cout "greet(Alice):"; cout greeting;
+    
+    cout "";
+    cout "=== 9. WHILE LOOPS ===";
+    
+    cout "Countdown from 5:";
+    adv uint counter = 5;
+    while (counter > 0) {
+        cout counter;
+        counter = counter - 1;
+    }
+    
+    cout "Sum 1 to 10:";
+    adv uint i = 1;
+    adv uint sumLoop = 0;
+    while (i <= 10) {
+        sumLoop = sumLoop + i;
+        i = i + 1;
+    }
+    cout sumLoop;
+    
+    cout "Squares 1 to 5:";
+    adv uint j = 1;
+    while (j <= 5) {
+        cout j&;
+        j = j + 1;
+    }
+    
+    cout "";
+    cout "=== 10. SWITCH STATEMENTS ===";
+    
+    cout "Testing switch with 0:";
+    adv uint testVal = 0;
+    switch(testVal) {
+        case 0: cout "ZERO";
+        case 1: cout "ONE";
+        case 2: cout "TWO";
+        default: cout "OTHER";
+    }
+    
+    cout "Testing switch with 5:";
+    adv uint testVal2 = 5;
+    switch(testVal2) {
+        case 0: cout "ZERO";
+        case 1: cout "ONE";
+        case 2: cout "TWO";
+        default: cout "OTHER (default)";
+    }
+    
+    cout "Number to word:";
+    adv uint num0 = 0;
+    adv uint num3 = 3;
+    adv uint num99 = 99;
+    adv string word0 = numberToWord(num0);
+    adv string word3 = numberToWord(num3);
+    adv string word99 = numberToWord(num99);
+    cout word0;
+    cout word3;
+    cout word99;
+    
+    cout "";
+    cout "=== 11. NESTED STRUCTURES ===";
+    
+    cout "Nested expression:";
+    adv uint nested = ((2 + 3)& * (4 - 1)&) + (5 ^ 2)&;
+    cout nested;
+    
+    cout "Nested loops - multiplication table 3:";
+    adv uint mult = 1;
+    while (mult <= 5) {
+        adv uint result = 3 * mult;
+        cout result;
+        mult = mult + 1;
+    }
+    
+    cout "";
+    cout "=== 12. EDGE CASES ===";
+    
+    adv uint zero1 = 0;
+    adv uint one = 1;
+    adv uint maxTest = 65535;
+    
+    cout "0&:"; cout zero1&;
+    cout "1&:"; cout one&;
+    cout "0^5:"; cout zero1 ^ 5;
+    cout "5^0:"; cout 5 ^ zero1;
+    cout "1^100:"; cout one ^ 100;
+    
+    cout "Division by powers:";
+    adv uint div1 = 100 / 2&;
+    adv uint div2 = 64 / (2 ^ 3);
+    cout "100/2&:"; cout div1;
+    cout "64/(2^3):"; cout div2;
+    
+    cout "";
+    cout "=== 13. COMBINED OPERATIONS ===";
+    
+    cout "All operators:";
+    adv uint allOps = (10 + 5)& * 2 ^ 2 - 3& + 100 / 4 % 7;
+    cout allOps;
+    
+    cout "Comparisons in expressions:";
+    adv uint cmpExpr = (5 > 3) + (10 == 10) + (7 != 7);
+    cout cmpExpr;
+    
+    cout "Square of power:";
+    adv uint sqPow = (3 ^ 3)&;
+    cout sqPow;
+    
+    cout "Power of square:";
+    adv uint powSq = (3&) ^ 2;
+    cout powSq;
+    
+    cout "";
+    cout "=== 14. FUNCTIONS SHOWCASE ===";
+    
+    adv uint n = 4;
+    cout "n=4";
+    cout "factorial(n):"; cout factorial(n);
+    cout "square(n):"; cout square(n);
+    cout "power(n,2):"; cout power(n, 2);
+    cout "sumOfSquares(n,3):"; cout sumOfSquares(n, 3);
+}
+
